@@ -1,0 +1,39 @@
+Sub CekStokBarang()
+  Dim ws As Worksheet
+    Dim lastRow As Long
+    Dim i As Long
+    Dim stok As Double
+    Dim barangDicari As String
+    Dim notifikasi As String
+    
+    ' Setel sheet di mana data stok berada di dalam contoh ini bernama kartustok
+    Set ws = ThisWorkbook.Sheets("kartustok")
+    
+    ' Cari baris terakhir dengan data di kolom C dimana bari C merupakan baris adanya nama stok barang 
+    lastRow = ws.Cells(ws.Rows.Count, "C").End(xlUp).Row
+    
+    ' Ambil nilai atau nama barang dari TextBox
+    barangDicari = namabarang.Value
+    
+    ' Inisialisasi pesan notifikasi
+    notifikasi = ""
+    
+    ' Loop melalui setiap baris untuk memeriksa stok, mulai dari baris ke-6 karena heder di mulai dari 5
+    For i = 6 To lastRow
+        If ws.Cells(i, "C").Value = barangDicari Then
+
+'pada kolom L merupakan kolom berisikan angka nilai dari stok berdasarkan nama barang di C
+
+            stok = ws.Cells(i, "L").Value
+            If stok < 10 Then
+              notifikasi = "Stok untuk barang '" & barangDicari & "' kurang dari 10 yaitu sisa: " & stok & " silahkan order kembali"
+            End If
+            Exit For ' Keluar dari loop setelah menemukan barang yang dicari
+        End If
+    Next i
+    
+    ' Tampilkan pesan notifikasi jika stok kurang dari 10
+    If Len(notifikasi) > 0 Then
+        MsgBox notifikasi, vbExclamation, "Peringatan Stok Rendah"
+    End If
+End Sub
